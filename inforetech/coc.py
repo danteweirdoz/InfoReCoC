@@ -41,13 +41,14 @@ class CoC(object):
         im = Image.open(cStringIO(self.dev.screencap()))
         return im.rotate(90).crop(self.region)
 
-    def keep_alive(self):
+    def keep_alive(self, interval):
+        from datetime import datetime
         while True:
             x = (self.right - self.left) / 2
             y = (self.bottom - self.top) * 3 / 4
             self.dev.tap(x, y)
-            print >>sys.stderr, "Tapped at (%d, %d)" % (x, y)
-            time.sleep(5)
+            print >>sys.stderr, datetime.now(), "Tapped at (%d, %d)" % (x, y)
+            time.sleep(interval)
 
 
 def test():
