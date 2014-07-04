@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import sys
+
 from inforetech.adb import ADB
 from inforetech.android import AndroidDevice
 from inforetech.coc import CoC
