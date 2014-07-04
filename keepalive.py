@@ -2,7 +2,7 @@
 
 from inforetech.adb import ADB
 from inforetech.android import AndroidDevice
-from inforetect.coc import CoC
+from inforetech.coc import CoC
 
 
 def main():
