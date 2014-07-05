@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
 import sys
-from PIL import Image
-from cStringIO import StringIO as cStringIO
 
 from inforetech.adb import ADB
 from inforetech.android import AndroidDevice
@@ -15,7 +13,10 @@ def main():
                             5555))
     coc.run()
     im = coc.capture_screen()
-    im.show()
+    if len(sys.argv) > 1:
+        im.save(sys.argv[1])
+    else:
+        im.show()
 
 
 if __name__ == "__main__":
