@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="refresh" content="60" >
+    <title>CoC</title>
+    <style type="text/css">
+        body {
+            font-size: 64px;
+        }
+        input {
+            font-size: 48px;
+        }
+        input.keep_alive_on {
+            background-color: #00FF00;
+        }
+        input.keep_alive_off {
+            background-color: #FF0000;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <form action="./coc" method="POST">
+        <b>{{ hostname }}</b>
+        {% if being_kept_alive %}
+        <input type="hidden" name="keep_alive" value="0" />
+        <input type="submit" class="keep_alive_on" value="TURN OFF" />
+        {% else %}
+        <input type="hidden" name="keep_alive" value="1" />
+        <input type="submit" class="keep_alive_off" value="TURN ON" />
+        {% endif %}
+    </form>
+</div>
+</body>
+</html>

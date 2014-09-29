@@ -13,6 +13,11 @@ class CoC(object):
 
     def __init__(self, android_device):
         self.dev = android_device
+        self.region = None
+        self.left = 0
+        self.right = 0
+        self.top = 0
+        self.bottom = 0
 
     def run(self):
         self.dev.unlock_screen()
@@ -41,14 +46,35 @@ class CoC(object):
         im = Image.open(cStringIO(self.dev.screencap()))
         return im.rotate(90).crop(self.region)
 
-    def keep_alive(self, interval):
+    def keep_alive(self, interval, shared_keep_alive):
         from datetime import datetime
         while True:
-            x = (self.right - self.left) / 2
-            y = (self.bottom - self.top) * 3 / 4
-            self.dev.tap(x, y)
-            print >>sys.stderr, datetime.now(), "Tapped at (%d, %d)" % (x, y)
-            time.sleep(interval)
+            print >>sys.stderr, datetime.now()
+            if shared_keep_alive.value:
+                regions = self.dev.get_visible_regions(CoC.PACKAGE_NAME, CoC.MAIN_ACTIVITY)
+                print >>sys.stderr, "\tRegions: %d (%s)" % (len(regions), ", ".join([str(r) for r in regions]))
+                if len(regions) == 0:
+                    self.run()
+                    print >>sys.stderr, "\tForce running Game"
+                    continue
+                elif len(regions) == 1:
+                    # The game window only
+                    r = regions[0]
+                    x = abs((r[2] - r[0]) / 2)
+                    y = abs((r[3] - r[1]) * 3 / 4)
+                    self.dev.tap(x, y)
+                    print >>sys.stderr, "\tTapped on Game at (%d, %d)" % (x, y)
+                elif len(regions) == 2:
+                    # There is a message window
+                    r = regions[1]
+                    x = abs((r[2] - r[0]) / 2)
+                    y = max(r[3] - 20, r[1] + 20)
+                    self.dev.tap(x, y)
+                    print >>sys.stderr, "\tTapped on Notification at (%d, %d)" % (x, y)
+                time.sleep(interval)
+            else:
+                print >>sys.stderr, "\tKeep rest"
+                time.sleep(1)
 
 
 def test():
