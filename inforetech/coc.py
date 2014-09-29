@@ -54,8 +54,8 @@ class CoC(object):
                 regions = self.dev.get_visible_regions(CoC.PACKAGE_NAME, CoC.MAIN_ACTIVITY)
                 print >>sys.stderr, "\tRegions: %d (%s)" % (len(regions), ", ".join([str(r) for r in regions]))
                 if len(regions) == 0:
+                    print >>sys.stderr, "\tForce running Game..."
                     self.run()
-                    print >>sys.stderr, "\tForce running Game"
                     continue
                 elif len(regions) == 1:
                     # The game window only

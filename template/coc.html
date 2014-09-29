@@ -5,11 +5,11 @@
     <meta http-equiv="refresh" content="60" >
     <title>CoC</title>
     <style type="text/css">
-        body {
-            font-size: 64px;
+        body, input {
+            font-size: 16px;
         }
-        input {
-            font-size: 48px;
+        #wrapper {
+            max-width: 480px;
         }
         input.keep_alive_on {
             background-color: #00FF00;
@@ -17,10 +17,20 @@
         input.keep_alive_off {
             background-color: #FF0000;
         }
+        @media only screen and (max-device-width: 480px) {
+            body {
+                -webkit-text-size-adjust: none;
+                font-size: 64px;
+                line-height: 1.2em;
+            }
+            input {
+                font-size: 32px;
+            }
+        }
     </style>
 </head>
 <body>
-<div>
+<div id="wrapper">
     <form action="./coc" method="POST">
         <b>{{ hostname }}</b>
         {% if being_kept_alive %}

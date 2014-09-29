@@ -10,6 +10,7 @@ from multiprocessing import Process, Manager
 from twisted.web.server import Site
 from twisted.web.resource import Resource
 from twisted.internet import reactor
+from twisted.web.util import redirectTo
 
 from jinja2 import Environment, PackageLoader
 
@@ -41,7 +42,7 @@ class CoCResource(Resource):
             keep_alive = int(request.args["keep_alive"][0])
         self.shared_keep_alive.value = False if keep_alive == 0 else True
         os.kill(os.getppid(), signal.SIGCONT)
-        return self.render_GET(request)
+        return redirectTo("coc", request)
 
 
 def web_server(port, shared_keep_alive):
