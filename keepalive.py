@@ -46,10 +46,12 @@ class CoCResource(Resource):
 
 def web_server(port, shared_keep_alive):
     jinja = Environment(loader=PackageLoader("keepalive", "template"))
-    coc_page = CoCResource(shared_keep_alive, jinja)
+
     root = Resource()
-    root.putChild("coc", coc_page)
+    root.putChild("coc", CoCResource(shared_keep_alive, jinja))
+
     site = Site(root)
+
     reactor.listenTCP(port, site)
     reactor.run()
 
@@ -72,16 +74,19 @@ def main():
     manager = Manager()
     shared_keep_alive = manager.Value("keep_alive", True)
 
-    httpd = Process(target=web_server, args=(HTTP_SERVER_PORT, shared_keep_alive,))
+    httpd = Process(name="WebServer:%d" % HTTP_SERVER_PORT,
+                    target=web_server,
+                    args=(HTTP_SERVER_PORT, shared_keep_alive,))
     httpd.start()
-    print "HTTP Server started on port %d" % HTTP_SERVER_PORT
+    print "HTTP Server started on port %d (PID: %d)" % (HTTP_SERVER_PORT, httpd.pid)
 
     try:
         coc.keep_alive(keep_alive_interval, shared_keep_alive)
     except KeyboardInterrupt:
-        print "Terminated."
+        print "Interrupted."
     finally:
         if httpd is not None:
+            print "Terminate the web server..."
             httpd.terminate()
 
 
