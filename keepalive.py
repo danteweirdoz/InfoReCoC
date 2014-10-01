@@ -110,8 +110,9 @@ def sigusr1(signum, stack):
         im.save(SCREENSHOT_TMP_FILE)
         shared.screen_captured = 1
         print >>sys.stderr, datetime.now(), "Screen captured to %s!" % SCREENSHOT_TMP_FILE
-    except:
+    except Exception as e:
         shared.screen_captured = 2
+        print >>sys.stderr, datetime.now(), "Error: %s" % str(e)
 
 
 def sigusr2(signnum, stack):
