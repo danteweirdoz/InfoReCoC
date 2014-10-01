@@ -46,11 +46,11 @@ class CoC(object):
         im = Image.open(cStringIO(self.dev.screencap()))
         return im.rotate(90).crop(self.region)
 
-    def keep_alive(self, interval, shared_keep_alive):
+    def keep_alive(self, interval, shared):
         from datetime import datetime
         while True:
             print >>sys.stderr, datetime.now()
-            if shared_keep_alive.value:
+            if shared.keep_alive:
                 regions = self.dev.get_visible_regions(CoC.PACKAGE_NAME, CoC.MAIN_ACTIVITY)
                 print >>sys.stderr, "\tRegions: %d (%s)" % (len(regions), ", ".join([str(r) for r in regions]))
                 if len(regions) == 0:
@@ -71,10 +71,11 @@ class CoC(object):
                     y = max(r[3] - 20, r[1] + 20)
                     self.dev.tap(x, y)
                     print >>sys.stderr, "\tTapped on Notification at (%d, %d)" % (x, y)
-                time.sleep(interval)
             else:
                 print >>sys.stderr, "\tKeep rest"
-                time.sleep(1)
+
+            # Sleep
+            time.sleep(interval)
 
 
 def test():

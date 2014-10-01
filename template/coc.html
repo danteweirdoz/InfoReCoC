@@ -27,12 +27,19 @@
                 font-size: 32px;
             }
         }
+        .last_updated {
+            font-size: 80%;
+        }
+        .hostname {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+<div class="last_updated">@{{ last_updated }}</div>
 <div id="wrapper">
+    <div class="hostname">{{ hostname }}</div>
     <form action="./coc" method="POST">
-        <b>{{ hostname }}</b>
         {% if being_kept_alive %}
         <input type="hidden" name="keep_alive" value="0" />
         <input type="submit" class="keep_alive_on" value="TURN OFF" />
@@ -41,6 +48,7 @@
         <input type="submit" class="keep_alive_off" value="TURN ON" />
         {% endif %}
     </form>
+    <a href="./screenshot" target="_blank">Screen</a>
 </div>
 </body>
 </html>
