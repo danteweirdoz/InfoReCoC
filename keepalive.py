@@ -4,12 +4,12 @@ import sys
 import os
 import platform
 import signal
+from PIL import Image, ImageDraw
 
 from multiprocessing import Process, Manager
 from datetime import datetime
 from time import sleep
 from ctypes import c_bool, c_byte
-from fcntl import lockf, LOCK_EX, LOCK_UN, LOCK_READ
 
 from twisted.web.server import Site, NOT_DONE_YET
 from twisted.web.resource import Resource
@@ -69,7 +69,7 @@ class CoCScreenShot(Resource):
 
     def _send_screenshot(self, request):
         while self.shared.screen_captured == 0:
-            sleep(0.5)
+            sleep(0.25)
         if os.access(SCREENSHOT_TMP_FILE, os.R_OK):
             ss_content = open(SCREENSHOT_TMP_FILE).read()
             os.unlink(SCREENSHOT_TMP_FILE)
@@ -92,6 +92,12 @@ class CoCScreenShot(Resource):
 
 
 def web_server(port, shared):
+    """
+    A web server for remotely controlling.
+
+    :param port: Web server port
+    :param shared: A inter-processes shared namespace.
+    """
     jinja = Environment(loader=PackageLoader("keepalive", "template"))
 
     root = Resource()
@@ -105,7 +111,16 @@ def web_server(port, shared):
 
 
 def sigusr1(signum, stack):
+    """
+    Trigger the SIGUSR1 to take a screenshot and store it in a temporary file.
+
+    :param signum:
+    :param stack:
+    """
     im = coc.capture_screen()
+    im.thumbnail((640, 480), Image.ANTIALIAS)
+    draw = ImageDraw.Draw(im)
+    draw.text((0, im.size[1] - 20), str(datetime.now()), (255, 0, 0))
     try:
         im.save(SCREENSHOT_TMP_FILE)
         shared.screen_captured = 1
@@ -116,6 +131,12 @@ def sigusr1(signum, stack):
 
 
 def sigusr2(signnum, stack):
+    """
+    Trigger SIGUSR2 to check the keep-alive status.
+
+    :param signnum:
+    :param stack:
+    """
     pass
 
 

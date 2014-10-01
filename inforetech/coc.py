@@ -14,10 +14,6 @@ class CoC(object):
     def __init__(self, android_device):
         self.dev = android_device
         self.region = None
-        self.left = 0
-        self.right = 0
-        self.top = 0
-        self.bottom = 0
 
     def run(self):
         self.dev.unlock_screen()
@@ -33,16 +29,15 @@ class CoC(object):
             print r
             if r[0] == 0 and r[1] == 0 and r[2] > r[0] and r[3] > r[1]:
                 self.region = r
-                self.left = r[0]
-                self.top = r[1]
-                self.right = r[2]
-                self.bottom = r[3]
                 break
 
     def quit(self):
         self.dev.press_home()
 
     def capture_screen(self):
+        """
+        :rtype : PIL.Image.Image
+        """
         im = Image.open(cStringIO(self.dev.screencap()))
         return im.rotate(90).crop(self.region)
 
@@ -71,6 +66,8 @@ class CoC(object):
                     y = max(r[3] - 20, r[1] + 20)
                     self.dev.tap(x, y)
                     print >>sys.stderr, "\tTapped on Notification at (%d, %d)" % (x, y)
+                if self.region is None and len(regions) > 0:
+                    self.region = regions[0]
             else:
                 print >>sys.stderr, "\tKeep rest"
 
