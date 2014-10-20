@@ -144,7 +144,7 @@ def main():
     global coc, shared
 
     if len(sys.argv) < 2:
-        print "Syntax: %s <Keep-alive interval> [host:[port]]"
+        print "Syntax: %s <Keep-alive interval> [host:[port]] [http port]"
         return 1
     keep_alive_interval = int(sys.argv[1])
     host = None
@@ -155,6 +155,8 @@ def main():
         if len(info) > 1:
             port = int(info[1])
 
+    http_server_port = int(sys.argv[3]) if len(sys.argv) > 3 else HTTP_SERVER_PORT
+
     coc = CoC(AndroidDevice(ADB("/usr/local/bin/adb"),
                             host, port))
     manager = Manager()
@@ -162,11 +164,11 @@ def main():
     shared.keep_alive = manager.Value(c_bool, True)
     shared.screen_captured = manager.Value(c_byte, 0)
 
-    httpd = Process(name="WebServer:%d" % HTTP_SERVER_PORT,
+    httpd = Process(name="WebServer:%d" % http_server_port,
                     target=web_server,
-                    args=(HTTP_SERVER_PORT, shared,))
+                    args=(http_server_port, shared,))
     httpd.start()
-    print "HTTP Server started on port %d (PID: %d)" % (HTTP_SERVER_PORT, httpd.pid)
+    print "HTTP Server started on port %d (PID: %d)" % (http_server_port, httpd.pid)
 
     signal.signal(signal.SIGUSR1, sigusr1)
     signal.signal(signal.SIGUSR2, sigusr2)

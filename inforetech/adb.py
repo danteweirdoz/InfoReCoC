@@ -5,6 +5,7 @@ from subprocess import check_output
 class ADB(object):
     def __init__(self, path_to_adb=None):
         self.adb = self.__find_adb(path_to_adb)
+        self.url = ""
 
     # Find the runnable adb
     @staticmethod
@@ -30,7 +31,8 @@ class ADB(object):
         if host is not None:
             hp = host if port is None else "%s:%d" % (host, port)
             self.__run("connect %s" % hp)
+            self.url = "-s %s" % hp
 
     # Run a shell command on remote host
     def shell(self, command):
-        return self.__run("shell %s" % command)
+        return self.__run("%s shell %s" % (self.url, command))

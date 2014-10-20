@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/InfoReCoC.iml" filepath="$PROJECT_DIR$/.idea/InfoReCoC.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../ORM/tools/word2vec/.idea/word2vec.iml" filepath="$PROJECT_DIR$/../ORM/tools/word2vec/.idea/word2vec.iml" />
     </modules>
   </component>
 </project>
