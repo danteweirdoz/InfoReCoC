@@ -2,7 +2,6 @@
 
 import sys
 import os
-import platform
 import signal
 from PIL import Image, ImageDraw
 
@@ -46,7 +45,7 @@ class CoCKeepAlive(Resource):
         return tpl.render(
             {
                 "last_updated": datetime.now(),
-                "hostname": platform.node().split(".")[0],
+                "model": self.shared.model,
                 "being_kept_alive": self.shared.keep_alive
             }).encode("utf-8")
 
@@ -163,6 +162,7 @@ def main():
     shared = manager.Namespace()
     shared.keep_alive = manager.Value(c_bool, True)
     shared.screen_captured = manager.Value(c_byte, 0)
+    shared.model = coc.model
 
     httpd = Process(name="WebServer:%d" % http_server_port,
                     target=web_server,

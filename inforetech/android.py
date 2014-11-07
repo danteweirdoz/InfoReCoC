@@ -8,6 +8,10 @@ class AndroidDevice(object):
         self.adb = adb
         self.adb.connect(host, port)
 
+    def get_model(self):
+        result = self.adb.shell("getprop ro.product.model")
+        return result.strip()
+
     def screencap(self):
         result = self.adb.shell("screencap -p")
         return result.replace("\r\n", "\n")
@@ -38,7 +42,6 @@ class AndroidDevice(object):
                 if m:
                     regions.append([int(x) for x in m.groups()])
         return regions
-
 
     def is_visible(self, package, main_activity):
         return len(self.get_visible_regions(package, main_activity)) > 0

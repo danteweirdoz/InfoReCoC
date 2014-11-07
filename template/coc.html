@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="refresh" content="60" >
-    <title>CoC</title>
+    <title>CoC - {{ model }}</title>
     <style type="text/css">
         body, input {
             font-size: 16px;
@@ -30,7 +30,7 @@
         .last_updated {
             font-size: 80%;
         }
-        .hostname {
+        .model {
             font-weight: bold;
         }
     </style>
@@ -38,7 +38,7 @@
 <body>
 <div class="last_updated">@{{ last_updated }}</div>
 <div id="wrapper">
-    <div class="hostname">{{ hostname }}</div>
+    <div class="model">{{ model }}</div>
     <form action="./coc" method="POST">
         {% if being_kept_alive %}
         <input type="hidden" name="keep_alive" value="0" />

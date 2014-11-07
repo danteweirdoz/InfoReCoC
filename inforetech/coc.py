@@ -13,6 +13,7 @@ class CoC(object):
 
     def __init__(self, android_device):
         self.dev = android_device
+        self.model = android_device.get_model()
         self.region = None
 
     def run(self):
