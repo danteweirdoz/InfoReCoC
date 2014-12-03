@@ -35,8 +35,8 @@ python keepalive.py 60 192.168.56.101:5555 8001
 
 After that, you can access the following things via a web browser.
 
-* Controller interface: http://<IP>:8001/coc
-* Screenshot: http://<IP>:8001/screenshot
+* Controller interface: http://**IP**:8001/coc
+* Screenshot: http://**IP**:8001/screenshot
 
 in which, **IP** is the IP address of the virtual Linux machine.
 
