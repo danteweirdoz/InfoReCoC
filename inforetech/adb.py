@@ -1,3 +1,9 @@
+################################################################################
+# Automation Toolkit for Clash of Clans by InfoRe Inc., Viet Nam
+#
+# Author: Nguyen Viet Cuong <mrcuongnv@gmail.com>
+################################################################################
+
 import os
 from subprocess import check_output
 

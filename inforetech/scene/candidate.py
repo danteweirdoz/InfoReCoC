@@ -1,3 +1,9 @@
+################################################################################
+# Automation Toolkit for Clash of Clans by InfoRe Inc., Viet Nam
+#
+# Author: Nguyen Viet Cuong <mrcuongnv@gmail.com>
+################################################################################
+
 import sys
 from PIL import Image
 
